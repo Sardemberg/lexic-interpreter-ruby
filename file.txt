@@ -1,5 +1,7 @@
-var test = 0;
+var test = 1
 
-for (var i = 1; i <= 4; i++){
-    prin('Hello')
-}
+if teste == 1:
+    print('Deu certo')
+
+for test in range(test):
+    print('index')

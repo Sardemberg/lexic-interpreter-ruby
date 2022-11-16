@@ -1,4 +1,5 @@
 require_relative 'sentences/print'
+require_relative 'sentences/for'
 
 module Operations
   class LineAnalisys
@@ -7,24 +8,39 @@ module Operations
       @number_line = number_line
       @errors = []
       @sentences = []
-      @default_sentences = ['for', 'print', 'var']
+      @default_sentences = {
+        'print': {
+          operation: Operations::Sentences::Print
+        },
+        'for': {
+          operation: Operations::Sentences::For
+        },
+        'var': nil,
+        'if': nil
+      }
     end
 
     def process
       remove_empty_caracters
+      return if @line == ''
+
       identify_sentences
       identify_errors
+      show_errors
     end
 
     private
 
     def remove_empty_caracters
       @line = @line.gsub("\n", '')
+      @line = @line.gsub("\r", '')
       @line = @line.gsub(" ", '')
     end
 
     def identify_sentences
-      @default_sentences.map do |sentence|
+      has_include = false
+      
+      @default_sentences.keys.map(&:to_s).map do |sentence|
         next unless @line.include?(sentence)
 
         @sentences << {
@@ -32,17 +48,31 @@ module Operations
           line: @number_line,
           value: @line
         }
+
+        has_include = true
       end
+
+      @errors << "Erro na linha: #{@number_line}" unless has_include
     end
 
     def identify_errors
       @sentences.each do |sentence|
-        if sentence[:sentence] == 'print'
-          value = Operations::Sentences::Print.new(sentence[:value]).process
-          if value.values.include? false
-            p("Erro na linha: #{sentence[:line]}")
+        default_sentence = @default_sentences[sentence[:sentence].to_sym]
+
+        unless default_sentence.nil?
+          operation = default_sentence[:operation]
+          result = operation.new(sentence[:value]).process
+
+          unless result
+            @errors << "Erro na linha: #{sentence[:line]}"
           end
         end
+      end
+    end
+
+    def show_errors
+      @errors.each do |error|
+        p error
       end
     end
   end

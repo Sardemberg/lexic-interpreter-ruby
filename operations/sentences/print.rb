@@ -6,18 +6,17 @@ module Operations
       def initialize(sentence)
         @sentence = sentence
         @stack = Operations::Utils::Stack.new("print('')".split(''))
-        @validation = {}
+        @result = true
       end
 
       def process
         until @stack.empty
           caracter = @stack.pop
-
-          @validation[caracter] = false
-          @validation[caracter] = true if @sentence.include?(caracter)
+          @result = false unless @sentence.include?(caracter)
+          @sentence = @sentence.sub(caracter, '')
         end
 
-        @validation
+        @result
       end
     end
   end
