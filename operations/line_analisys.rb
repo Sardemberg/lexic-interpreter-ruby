@@ -1,5 +1,8 @@
 require_relative 'sentences/print'
 require_relative 'sentences/for'
+require_relative 'sentences/if'
+require_relative 'sentences/var'
+require_relative 'sentences/while'
 
 module Operations
   class LineAnalisys
@@ -15,8 +18,15 @@ module Operations
         'for': {
           operation: Operations::Sentences::For
         },
-        'var': nil,
-        'if': nil
+        'var': {
+          operation: Operations::Sentences::Var
+        },
+        'if': {
+          operation: Operations::Sentences::If
+        },
+        'while': {
+          operation: Operations::Sentences::While
+        }
       }
     end
 
@@ -34,7 +44,6 @@ module Operations
     def remove_empty_caracters
       @line = @line.gsub("\n", '')
       @line = @line.gsub("\r", '')
-      @line = @line.gsub(" ", '')
     end
 
     def identify_sentences
