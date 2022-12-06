@@ -5,19 +5,19 @@ module Operations
         class For
             def initialize(sentence)
                 @sentence = sentence
-                @stack = Operations::Utils::Stack.new("for in :".split(' '))
+                @stack = Operations::Utils::Stack.new(["for", ' i ', ' in ', 'range', '(', ')', ':'])
                 @result = true
-              end
+            end
         
-              def process
+            def process
                 until @stack.empty
-                  caracter = @stack.pop
-                  @result = false unless @sentence.include?(caracter)
-                  @sentence = @sentence.sub(caracter, '')
+                    caracter = @stack.pop
+                    @result = false unless @sentence.include?(caracter)
+                    @sentence = @sentence.sub(caracter, '')
                 end
         
                 @result
-              end
+            end
         end
     end
 end

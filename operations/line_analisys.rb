@@ -52,7 +52,7 @@ module Operations
         has_include = true
       end
 
-      @errors << "Erro na linha: #{@number_line}" unless has_include
+      @errors << "Erro na linha: #{@number_line}, sentença inválida" unless has_include
     end
 
     def identify_errors
@@ -64,7 +64,7 @@ module Operations
           result = operation.new(sentence[:value]).process
 
           unless result
-            @errors << "Erro na linha: #{sentence[:line]}"
+            @errors << "Erro na linha: #{sentence[:line]}, sentença #{sentence[:sentence].upcase} com erro de sintaxe"
           end
         end
       end
