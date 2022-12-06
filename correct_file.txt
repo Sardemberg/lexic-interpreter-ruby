@@ -1,0 +1,10 @@
+var test = 1
+
+if test > 1:
+    print('Deu certo')
+
+for test in range(test):
+    print('index')
+
+while test != 7:
+    print('Hola')
